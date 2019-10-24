@@ -5,6 +5,8 @@ import java.util.UUID;
 import org.baeldung.persistence.model.User;
 import org.baeldung.registration.OnRegistrationCompleteEvent;
 import org.baeldung.service.IUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
@@ -26,6 +28,8 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
     @Autowired
     private Environment env;
+    
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     // API
 
@@ -54,6 +58,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         email.setTo(recipientAddress);
         email.setSubject(subject);
         email.setText(message + " \r\n" + confirmationUrl);
+        log.info(confirmationUrl);
         email.setFrom(env.getProperty("support.email"));
         return email;
     }
